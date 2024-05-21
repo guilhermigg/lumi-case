@@ -1,0 +1,42 @@
+services:
+  lumi-api:
+    build:
+      dockerfile: Dockerfile
+      context: ./lumi-api/
+    working_dir: /app
+    restart: always
+    volumes:
+      - ./lumi-api:/app
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+
+  lumi-frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./lumi-frontend/
+    working_dir: /app
+    restart: always
+    volumes:
+      - ./lumi-frontend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+
+  lumi-database:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+  node_modules:
