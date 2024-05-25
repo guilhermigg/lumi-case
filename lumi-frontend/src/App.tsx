@@ -1,9 +1,10 @@
 //import reactLogo from './assets/react.svg'
-import { Container, styled } from '@mui/material';
+import { Box, Container, styled } from '@mui/material';
 import './App.css'
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { FormEvent, useState } from 'react';
+import Header from './components/Header';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -53,25 +54,28 @@ export default function App() {
   const [pdfFile, setPdfFile] = useState(null);
 
   return (
-    <Container>
-      <h1> LUMI Dev Case </h1>
-      <form onSubmit={handleSubmit}>
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-        >
-          Upload PDF
-          <VisuallyHiddenInput 
-            type='file'
-            accept='.pdf'
-            onChange={handleFileChange} 
-            />
-        </Button>
-        <Button type='submit'> Enviar </Button>
-      </form>
+    <Box>
+      <Header title="Lumi" />
+      <Container>
+        <h1> LUMI Dev Case </h1>
+        <form onSubmit={handleSubmit}>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+          >
+            Upload PDF
+            <VisuallyHiddenInput 
+              type='file'
+              accept='.pdf'
+              onChange={handleFileChange} 
+              />
+          </Button>
+          <Button type='submit'> Enviar </Button>
+        </form>
     </Container>
+    </Box>
   )
 }
