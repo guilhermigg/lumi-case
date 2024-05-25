@@ -1,6 +1,4 @@
-import app from '../app';
-import { describe, it, expect, beforeAll, test } from 'vitest';
-
+import { describe, expect, beforeAll, test } from 'vitest';
 
 describe('API Healthcheck', () => {
   let response : Response;
