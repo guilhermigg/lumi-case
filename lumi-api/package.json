@@ -7,7 +7,7 @@
     "jest": "jest",
     "start": "tsx src/server.ts",
     "dev": "tsx watch src/server.ts",
-    "test": "pnpm vitest"
+    "test": "npm vitest"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "express": "^4.19.2",
     "express-fileupload": "^1.5.0",
     "pdf-parse": "^1.1.1",
+    "pdf-parse-debugging-disabled": "^1.1.1",
     "prisma": "^5.14.0",
     "vitest": "^1.6.0"
   },
@@ -28,7 +29,7 @@
     "@types/pdf-parse": "^1.1.4",
     "@types/supertest": "^6.0.2",
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "babel-preset-env": "^0.0.0",
     "superagent": "^9.0.2",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.10.5",
