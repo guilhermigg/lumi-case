@@ -12,7 +12,7 @@ export default function(text : string) : IPDFData | object {
     if(!customerNumber)
         throw new Error("Número do cliente não identificado");
 
-    result.customerNumber = customerNumber;
+    result.customerNumber = customerNumber.trim();
 
     // Mês de Referência
     const referenceMonth = regexHandler.exec(regexList.referenceMonth, 0);
