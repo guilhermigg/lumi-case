@@ -1,6 +1,5 @@
 import fs from 'fs';
-import PDFParser from 'pdf-parse';
-
+const PDFParser = require('pdf-parse-debugging-disabled');
 interface ITextPDF {
     text?: string,
 }
