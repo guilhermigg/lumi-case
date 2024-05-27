@@ -8,9 +8,11 @@ export default function Header({title}: {title: string}) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <img src="https://uploads-ssl.webflow.com/62f9249c43126cafce10bc33/62fd12497ffcb83b28ea3309_logo-lumi-white.svg"></img>
+          <Box sx={{padding: 1}}>
+            <img src="https://uploads-ssl.webflow.com/62f9249c43126cafce10bc33/62fd12497ffcb83b28ea3309_logo-lumi-white.svg" width={110} />
+          </Box>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Case
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>

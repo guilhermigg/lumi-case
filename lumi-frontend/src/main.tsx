@@ -1,8 +1,8 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { BrowserRouter } from 'react-router-dom';
+import MainRoutes from './routes.tsx';
 
 const darkTheme = createTheme({
   palette: {
@@ -14,10 +14,10 @@ const darkTheme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <BrowserRouter>
     <ThemeProvider theme={darkTheme}>
+      <MainRoutes/>
       <CssBaseline enableColorScheme/>
-      <App />
     </ThemeProvider>
-  </React.StrictMode>
+  </BrowserRouter>
 )
