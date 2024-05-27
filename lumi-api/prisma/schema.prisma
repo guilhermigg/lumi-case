@@ -22,6 +22,7 @@ model Bill {
   municipalPublicLightingContribution Float?
 
   monthReference  DateTime?
+  billFileName String
 }
 
 model Customer {
