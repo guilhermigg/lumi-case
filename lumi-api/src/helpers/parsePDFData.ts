@@ -49,21 +49,21 @@ export default function(text : string) : IPDFData {
     const electricityNumbers = regexHandler.getNumbersArray(regexList.electricity);
     result.electricity = {
         kwh: handleEnergyNumbers(electricityNumbers[0]),
-        price:handleEnergyNumbers(electricityNumbers[1])
+        price:handleEnergyNumbers(electricityNumbers[2])
     }
 
     // Energia SCEE Isenta
     const electricitySCEENumbers = regexHandler.getNumbersArray(regexList.electricitySCEE);
     result.electricitySCEE = {
         kwh: handleEnergyNumbers(electricitySCEENumbers[0]),
-        price: handleEnergyNumbers(electricitySCEENumbers[1])
+        price: handleEnergyNumbers(electricitySCEENumbers[2])
     }
 
     // Energia compensada GDI I
     const electricityGDINumbers = regexHandler.getNumbersArray(regexList.electricityGDI);
     result.electricityGDI = {
         kwh: handleEnergyNumbers(electricityGDINumbers[0]),
-        price: handleEnergyNumbers(electricityGDINumbers[1])
+        price: handleEnergyNumbers(electricityGDINumbers[2])
     }
 
     // Contribuição Iluminação Pública Municipal
