@@ -3,86 +3,27 @@ import { useEffect, useRef, useState } from "react";
 import { Autocomplete, Container, Grid, TextField } from "@mui/material";
 import DashboardChart from "../../components/DashboardChart";
 import DashboardCardNumbers from "../../components/DashboardCardNumbers";
+import customerService from "../../services/customerService";
+import billService from "../../services/billService";
+
+type customerList = {
+  label: string,
+  refNumber: string 
+}
 
 export default function Dashboard() {
-  const [ customers, setCustomers ] = useState([]);
+  const [ customers, setCustomers ] = useState<customerList[]>([]);
   const [ customerReference, setCustomerReference ] = useState('');
   const [ monthLabels, setMonthLabels ] = useState<string[]>([]);
 
-  const [ energia, setEnergia ] = useState<number[]>([]);
-  const [ energiaSCEE, setEnergiaSCEE] = useState<number[]>([]);
-  const [ energiaGDI, setEnergiaGDI] = useState<number[]>([]);
+  const [ electricityConsumption, setElectricityConsumption ] = useState<number[]>([]);
+  const [ compensatedElectricity, setCompensatedElectricity ] = useState<number[]>([]);
 
-  const [ electricityPrice, setElectricityPrice ] = useState<number[]>([]);
-  const [ electricitySCEEPrice, setElectricitySCEEPrice ] = useState<number[]>([]);
-  const [ electricityGDIPrice, setElectricityGDIPrice ] = useState<number[]>([]);
+  const [ electricityValue, setElectricityValue ] = useState<number[]>([]);
+  const [ electricityValueGDI, setElectricityValueGDI ] = useState<number[]>([]);
 
   const [ totalKwh, setTotalKwh ] = useState(0);
   const [ totalPrice, setTotalPrice ] = useState('0');
-
-  const fetchCustomers = async () => {
-    const response = await fetch('http://localhost:5000/api/v1/customers');
-    const result = await response.json();
-    const customers = result.customers.map((e: any)  => {
-      return {label: e.name, refNumber: e.referenceNumber}
-    })
-    setCustomers(customers); 
-  };
-
-  function getEnergyPriceData(bills : any) {
-    const electricityResults = bills.map((item: { electricityPrice: number }) => item.electricityPrice)
-    const electricityGDIResults = bills.map((item: { electricityGDIPrice: number }) => item.electricityGDIPrice)
-    const electricitySCEEResults = bills.map((item: { electricitySCEEPrice: number }) => item.electricitySCEEPrice)
-
-    const totalElectricityPrice = electricityResults.reduce((sum: number, current: number) => sum + current, 0);
-    const totalElectricityGDIPrice = electricityGDIResults.reduce((sum: number, current: number) => sum + current, 0);
-    const totalElectricitySCEEPrice = electricitySCEEResults.reduce((sum: number, current: number) => sum + current, 0);
-
-    let priceTotal = totalElectricityPrice + totalElectricitySCEEPrice + totalElectricityGDIPrice;
-    priceTotal = parseFloat(priceTotal.toFixed(2))
-    let priceTotalFormatted = new Intl.NumberFormat().format(priceTotal)
-
-    setTotalPrice(priceTotalFormatted)
-
-    setElectricityPrice(electricityResults)
-    setElectricitySCEEPrice(electricitySCEEResults)
-    setElectricityGDIPrice(electricityGDIResults)
-  }
-
-  function getEnergyConsumptionData(bills : any) {
-    const electricityResults = bills.map((item: { electricityKwh: number }) => item.electricityKwh)
-    const electricityGDIResults = bills.map((item: { electricityGDIKwh: number }) => item.electricityGDIKwh)
-    const electricitySCEEResults = bills.map((item: { electricitySCEEKwh: number }) => item.electricitySCEEKwh)
-
-    const totalElectricityKwh = electricityResults.reduce((sum:number, current:number) => sum + current, 0);
-    const totalElectricitySCEEKwh = electricitySCEEResults.reduce((sum:number, current:number) => sum + current, 0);
-
-    setTotalKwh(totalElectricityKwh+totalElectricitySCEEKwh)
-
-    setEnergia(electricityResults)
-    setEnergiaSCEE(electricitySCEEResults)
-    setEnergiaGDI(electricityGDIResults)
-  }
-
-  const getBills = async () => {
-    const response = await fetch(`http://localhost:5000/api/v1/electricity/${customerReference}`);  
-    const result = await response.json();
-    if(!result) return;
-    const bills : any[] = result.bills;
-
-    let monthLabels = bills.map((item: { monthReference: string; }) => {
-      let date = new Date(item.monthReference);
-      let month = date.getUTCMonth()+1; 
-      let year = date.getUTCFullYear();
-
-      return `${month.toString().padStart(2, '0')}/${year}`
-    });
-
-    setMonthLabels(monthLabels);
-
-    getEnergyConsumptionData(bills);
-    getEnergyPriceData(bills);
-  }
 
   const firstRender = useRef(true);
   useEffect(() => {
@@ -93,6 +34,48 @@ export default function Dashboard() {
   useEffect(() => {
     fetchCustomers();
   },[])
+
+  const fetchCustomers = async () => {
+    const customers : ICustomer[] = await customerService.getCustomers();
+    const customersList : customerList[] = customers.map((e: any)  => {
+      return {label: e.name, refNumber: e.referenceNumber}
+    });
+
+    setCustomers(customersList); 
+  };
+
+  function getElectricityPriceData(bills : IBill[]) {
+    const electricityPriceData = billService.getElectricityPrice(bills);
+
+    setTotalPrice(electricityPriceData.priceTotalFormatted)
+    setElectricityValue(electricityPriceData.electricityResults)
+    setElectricityValueGDI(electricityPriceData.electricityGDIResults)
+  }
+
+  function getEnergyConsumptionData(bills : IBill[]) {
+    const electricityData = billService.getElectricityData(bills);
+
+    setTotalKwh(electricityData.totalElectricityKwh);
+    setElectricityConsumption(electricityData.electricityConsumptionResult);
+    setCompensatedElectricity(electricityData.compensatedElectricity);
+  }
+
+  const getBills = async () => {
+    const bills = await billService.getCustomerBills(customerReference);
+
+    let monthLabels = bills.map((item: { monthReference: Date }) => {
+      let date = new Date(item.monthReference);
+      let month = date.getUTCMonth()+1; 
+      let year = date.getUTCFullYear();
+
+      return `${month.toString().padStart(2, '0')}/${year}`
+    });
+
+    setMonthLabels(monthLabels);
+
+    getEnergyConsumptionData(bills);
+    getElectricityPriceData(bills);
+  }
 
   return (
     <>
@@ -128,9 +111,8 @@ export default function Dashboard() {
       <DashboardChart
         title={"Consumo de energia (kwh) por mês"}
         series={[
-              { data: energia, label: 'Energia' },
-              { data: energiaSCEE, label: 'Energia SCEE' },
-              { data: energiaGDI, label: 'Energia GDI' },
+              { data: electricityConsumption, label: 'Consumo de Energia' },
+              { data: compensatedElectricity, label: 'Energia Compensada' },
         ]}
         labels={monthLabels}
       />
@@ -138,9 +120,8 @@ export default function Dashboard() {
       <DashboardChart
         title={"Valor da energia (R$)"}
         series={[
-              { data: electricityPrice, label: 'Energia' },
-              { data: electricitySCEEPrice, label: 'Energia SCEE' },
-              { data: electricityGDIPrice, label: 'Energia GDI' },
+          { data: electricityValue, label: 'Valor total sem GDI' },
+          { data: electricityValueGDI, label: 'Valor GDI' },
         ]}
         labels={monthLabels}
       />
