@@ -5,7 +5,7 @@ export const regexList : IRegexList = {
     electricitySCEE: /Energia SCEE.*/,
     electricityGDI : /Energia compensada.*/,
     municipal: /Contrib.*/,
-    numbersOnly: /(\d+,\d+|\d+)/g
+    numbersOnly: /(\d+[,.]\d+|\d+)/g
 }
 
 export class RegExHandler {
