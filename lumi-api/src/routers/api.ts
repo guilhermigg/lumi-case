@@ -4,6 +4,8 @@ import extractTextPDF from '../helpers/scrapePDFHandler';
 import parsePDFData from '../helpers/parsePDFData';
 import { PrismaBillRepository } from '../repositories/implementations/PrismaBillRepository';
 import { PrismaCustomerRepository } from '../repositories/implementations/PrismaCustomerRepository';
+import { BillService } from '../services/BillService';
+import { CustomerService } from '../services/CustomerService';
 
 const apiRouter = express.Router();
 
@@ -13,9 +15,6 @@ apiRouter.get('/healthcheck', (req : Request, res : Response) => {
 
 apiRouter.post('/analysis', async (req : Request, res: Response) => {
     try{
-        const billRepository = new PrismaBillRepository()
-        const customerRepository = new PrismaCustomerRepository()
-
         const uploadResult = await handleUpload(req.files);
 
         const extractedText = await extractTextPDF(uploadResult.path || "");
@@ -23,25 +22,8 @@ apiRouter.post('/analysis', async (req : Request, res: Response) => {
 
         if(!data.customerNumber) throw new Error("Customer number is required");
 
-        let customer = await customerRepository.findByReferenceNumber(data.customerNumber)
-        if(!customer)
-            customer = await customerRepository.create({
-                referenceNumber: data.customerNumber,
-                name: "John Doe"
-            })
+        await new BillService().createBill({pdfData: data, fileName: uploadResult.fileName})
 
-        billRepository.create({
-            customerId: customer.id,
-            electricityGDIKwh: data.electricityGDI?.kwh,
-            electricityKwh: data.electricity?.kwh,
-            electricityGDIPrice: data.electricityGDI?.price,
-            electricityPrice: data.electricity?.price,
-            electricitySCEEKwh: data.electricitySCEE?.kwh,
-            electricitySCEEPrice: data.electricitySCEE?.price,
-            municipalPublicLightingContribution: data.municipalPublicLightingContribution,
-            monthReference: data.referenceMonth,
-        })
-        
         return res.status(200).json(data);
     } catch (e) {
         console.log(e)
