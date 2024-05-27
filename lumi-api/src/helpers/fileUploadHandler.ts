@@ -3,6 +3,7 @@ import path from 'path';
 
 interface IObjetoRetorno {
     path?: string
+    fileName: string
 }
 
 export default async function handleUpload(files : any) : Promise<IObjetoRetorno> {
@@ -13,5 +14,5 @@ export default async function handleUpload(files : any) : Promise<IObjetoRetorno
     const uploadPath = path.join(__dirname, '..', 'uploads', file.name);
 
     await file.mv(uploadPath);
-    return { "path": uploadPath }
+    return { "path": uploadPath, fileName: file.name }
 }
