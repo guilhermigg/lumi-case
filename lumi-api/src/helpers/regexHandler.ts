@@ -1,11 +1,11 @@
 export const regexList : IRegexList = {
     customerNumber: /\s[\d]{10}\s/i,
-    referenceMonth: /[A-Za-z]+\/\d{4}/,
+    referenceMonth: /[A-Zça-z]+\/\d{4}/,
     electricity: /Energia Elétrica.*/,
     electricitySCEE: /Energia SCEE.*/,
     electricityGDI : /Energia compensada.*/,
     municipal: /Contrib.*/,
-    numbersOnly: /(\d+[,.]\d+|\d+)/g
+    numbersOnly: /[-]?(\d+[,.]\d+|\d+)/g
 }
 
 export class RegExHandler {
