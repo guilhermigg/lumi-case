@@ -9,12 +9,24 @@ datasource db {
 
 model Bill {
   id Int @id @default(autoincrement())
+
   customer Customer @relation(fields:[customerId], references: [id])
   customerId Int
+
+  electricityKwh Float?
+  electricityPrice Float?
+  electricityGDIKwh Float?
+  electricityGDIPrice Float?
+  electricitySCEEKwh Float?
+  electricitySCEEPrice Float?
+  municipalPublicLightingContribution Float?
+
+  monthReference  DateTime?
 }
 
 model Customer {
   id Int @id @default(autoincrement())
+  referenceNumber String @unique
   name String
   bills Bill[]
 }
