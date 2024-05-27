@@ -15,6 +15,12 @@ const monthsList: string[] = [
     'Dezembro'
 ];
 
+function handleEnergyNumbers(value : string) {
+    if(!value) return null
+    let fixedValue = value.replace(/\./g, "").replace(",", ".")
+    return parseFloat(fixedValue)
+}
+
 export default function(text : string) : IPDFData {
     const regexHandler = new RegExHandler(text);
 
@@ -42,27 +48,27 @@ export default function(text : string) : IPDFData {
     // Energia Elétrica
     const electricityNumbers = regexHandler.getNumbersArray(regexList.electricity);
     result.electricity = {
-        kwh: parseFloat(electricityNumbers[0].replace(",", ".")),
-        price: parseFloat(electricityNumbers[1].replace(",", "."))
+        kwh: handleEnergyNumbers(electricityNumbers[0]),
+        price:handleEnergyNumbers(electricityNumbers[1])
     }
 
     // Energia SCEE Isenta
     const electricitySCEENumbers = regexHandler.getNumbersArray(regexList.electricitySCEE);
     result.electricitySCEE = {
-        kwh: parseFloat(electricitySCEENumbers[0].replace(",", ".")),
-        price: parseFloat(electricitySCEENumbers[1].replace(",", "."))
+        kwh: handleEnergyNumbers(electricitySCEENumbers[0]),
+        price: handleEnergyNumbers(electricitySCEENumbers[1])
     }
 
     // Energia compensada GDI I
     const electricityGDINumbers = regexHandler.getNumbersArray(regexList.electricityGDI);
     result.electricityGDI = {
-        kwh: parseFloat(electricityGDINumbers[0].replace(",", ".")),
-        price: parseFloat(electricityGDINumbers[1].replace(",", "."))
+        kwh: handleEnergyNumbers(electricityGDINumbers[0]),
+        price: handleEnergyNumbers(electricityGDINumbers[1])
     }
 
     // Contribuição Iluminação Pública Municipal
     const municipalArrayNumbers = regexHandler.getNumbersArray(regexList.municipal);
-    result.municipalPublicLightingContribution = parseFloat(municipalArrayNumbers[0].replace(",", "."));
+    result.municipalPublicLightingContribution = handleEnergyNumbers(municipalArrayNumbers[0])
 
     return result
 }
