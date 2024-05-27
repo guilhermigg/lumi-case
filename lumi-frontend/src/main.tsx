@@ -6,10 +6,7 @@ import MainRoutes from './routes.tsx';
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
-    background: {
-      paper: '#002E20'
-    },
+    mode: 'light',
   },
 });
 
