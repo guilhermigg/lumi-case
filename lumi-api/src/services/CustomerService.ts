@@ -2,7 +2,7 @@ import { Customer } from "@prisma/client";
 import { CustomerRepository } from "../repositories/CustomerRepository";
 import { PrismaCustomerRepository } from "../repositories/implementations/PrismaCustomerRepository";
 
-export class CustomerService {
+class CustomerService {
     customerRepository: CustomerRepository;
 
     constructor() {
@@ -10,7 +10,8 @@ export class CustomerService {
     }
 
     async findCustomerOrCreate(referenceNumber: string) : Promise<Customer> {
-        let customer = await this.customerRepository.findByReferenceNumber(referenceNumber)
+        let customer = await this.findCustomer(referenceNumber);
+
         if(!customer)
             customer = await this.customerRepository.create({
                 referenceNumber: referenceNumber,
@@ -19,4 +20,10 @@ export class CustomerService {
 
         return customer
     } 
+    async findCustomer(referenceNumber: string) : Promise<Customer | null> {
+        const customer = await this.customerRepository.findByReferenceNumber(referenceNumber);
+        return customer;
+    }
 }
+
+export default new CustomerService();

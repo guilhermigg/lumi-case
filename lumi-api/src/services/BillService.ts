@@ -3,21 +3,19 @@ import { BillRepository } from "../repositories/BillRepository"
 import { CustomerRepository } from "../repositories/CustomerRepository"
 import { PrismaBillRepository } from "../repositories/implementations/PrismaBillRepository"
 import { PrismaCustomerRepository } from "../repositories/implementations/PrismaCustomerRepository"
-import { CustomerService } from "./CustomerService"
+import customerService from "./CustomerService"
 
-export class BillService {
+class BillService {
     billRepository: BillRepository;
     customerRepository: CustomerRepository;
-    customerService: CustomerService;
 
     constructor() {
         this.billRepository = new PrismaBillRepository()
         this.customerRepository = new PrismaCustomerRepository()
-        this.customerService = new CustomerService();
     }
 
     async createBill({ pdfData, fileName }: { pdfData: IPDFData, fileName: string }) {
-        const customer : Customer = await this.customerService.findCustomerOrCreate(pdfData.customerNumber);
+        const customer : Customer = await customerService.findCustomerOrCreate(pdfData.customerNumber);
 
         const bill = await this.billRepository.create({
             customerId: customer.id,
@@ -34,4 +32,14 @@ export class BillService {
 
         return bill;
     }
+
+    async findCustomerBills(customerReference: string) {
+        const customer = await customerService.findCustomer(customerReference)
+        if(!customer) throw new Error("Cliente não encontrado")
+        const bills = await this.billRepository.findAllByCustomer(customer.id);
+
+        return bills;
+    }
 }
+
+export default new BillService();

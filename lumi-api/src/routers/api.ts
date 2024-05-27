@@ -4,8 +4,7 @@ import extractTextPDF from '../helpers/scrapePDFHandler';
 import parsePDFData from '../helpers/parsePDFData';
 import { PrismaBillRepository } from '../repositories/implementations/PrismaBillRepository';
 import { PrismaCustomerRepository } from '../repositories/implementations/PrismaCustomerRepository';
-import { BillService } from '../services/BillService';
-import { CustomerService } from '../services/CustomerService';
+import billService from '../services/BillService';
 
 const apiRouter = express.Router();
 
@@ -22,7 +21,7 @@ apiRouter.post('/analysis', async (req : Request, res: Response) => {
 
         if(!data.customerNumber) throw new Error("Customer number is required");
 
-        await new BillService().createBill({pdfData: data, fileName: uploadResult.fileName})
+        await billService.createBill({pdfData: data, fileName: uploadResult.fileName})
 
         return res.status(200).json(data);
     } catch (e) {
@@ -33,14 +32,7 @@ apiRouter.post('/analysis', async (req : Request, res: Response) => {
 
 apiRouter.get('/electricity/:refNumber', async (req : Request, res : Response) => {
     try {
-        const billRepository = new PrismaBillRepository()
-        const customerRepository = new PrismaCustomerRepository();
-
-        const customer = await customerRepository.findByReferenceNumber(req.params.refNumber)
-
-        if(!customer) throw new Error("Cliente não encontrado")
-
-        const bills = await billRepository.findAllByCustomer(customer.id);
+        const bills = await billService.findCustomerBills(req.params?.refNumber)
         return res.status(200).json({bills});
     } catch (e) {
         return res.status(400).json({error: e})
