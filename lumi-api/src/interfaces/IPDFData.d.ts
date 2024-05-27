@@ -1,15 +1,15 @@
 type electricityData = {
-    kwh: string;
-    price: string;
+    kwh: Float;
+    price: Float;
 } 
 
 interface IPDFData {
-    customerNumber: string | null;
-    referenceMonth?: string;
+    customerNumber: string;
+    referenceMonth?: DateTime;
 
     electricity?: electricityData
     electricitySCEE?: electricityData;
     electricityGDI?: electricityData;
 
-    municipalPublicLightingContribution?: string;
+    municipalPublicLightingContribution?: Float;
 }

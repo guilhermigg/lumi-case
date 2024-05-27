@@ -5,12 +5,19 @@ const prisma = new PrismaClient();
 
 export class PrismaCustomerRepository implements CustomerRepository {
   async findAll(): Promise<Customer[]> {
-    return prisma.customer.findMany({ include: { bills: true } });
+    return prisma.customer.findMany();
   }
 
   async findById(id: number): Promise<Customer | null> {
     return prisma.customer.findUnique({
       where: { id },
+      include: { bills: true },
+    });
+  }
+
+  async findByReferenceNumber(referenceNumber : string): Promise<Customer | null> {
+    return prisma.customer.findFirst({
+      where: { referenceNumber: referenceNumber },
       include: { bills: true },
     });
   }

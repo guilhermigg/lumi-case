@@ -15,10 +15,10 @@ export class RegExHandler {
         this.text = text;
     }
 
-    exec(regexName : RegExp, idx : number) {
+    exec(regexName : RegExp, idx : number) : string {
         const match = regexName.exec(this.text);
         const result = match ? match[idx] : null;
-        if(result) result.trim();
+        if(!result) return ""
         return result;
     }
 

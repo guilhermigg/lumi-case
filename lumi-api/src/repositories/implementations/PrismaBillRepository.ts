@@ -8,6 +8,10 @@ export class PrismaBillRepository implements BillRepository {
     return prisma.bill.findMany();
   }
 
+  async findAllByCustomer(customerId: number): Promise<Bill[]> {
+    return prisma.bill.findMany({ where: { customerId } });
+  }
+
   async findById(id: number): Promise<Bill | null> {
     return prisma.bill.findUnique({ where: { id } });
   }
