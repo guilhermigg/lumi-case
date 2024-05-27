@@ -1,4 +1,4 @@
-import { LineChart, ResponsiveChartContainer } from "@mui/x-charts";
+import { LineChart } from "@mui/x-charts";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import { Autocomplete, Container, TextField } from "@mui/material";
