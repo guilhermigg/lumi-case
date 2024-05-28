@@ -1,8 +1,8 @@
-import { api } from "./api";
+import api from "./api";
 
 class BillService {
     async getCustomerBills(referenceNumber: string) : Promise<IBill[]> {
-        const response = await api(`electricity/${referenceNumber}`);  
+        const response = await api.get(`electricity/${referenceNumber}`);  
         if(!response) return [];
         const bills : any[] = response.bills;
         return bills;

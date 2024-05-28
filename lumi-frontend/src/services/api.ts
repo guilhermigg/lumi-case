@@ -1,7 +1,14 @@
+class apiService {
+    public baseURL: string;
 
-export async function api(endpoint: string) {
-    let baseURL = "http://localhost:5000/api/v1/"
+    constructor(baseURL: string) {
+        this.baseURL = baseURL;
+    }
 
-    const result = await fetch(`${baseURL}${endpoint}`)
-    return result.json();
+    async get(endpoint: string) {
+        const result = await fetch(`${this.baseURL}${endpoint}`)
+        return result.json();
+    }
 }
+
+export default new apiService("http://localhost:5000/api/v1/");

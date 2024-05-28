@@ -1,8 +1,8 @@
-import { api } from "./api";
+import api from "./api";
 
 class CustomerService {
     async getCustomers() {
-        const result : {customers: ICustomer[]} = await api('customers');
+        const result : {customers: ICustomer[]} = await api.get('customers');
         return result.customers;
     }
 }

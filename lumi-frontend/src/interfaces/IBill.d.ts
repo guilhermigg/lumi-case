@@ -8,6 +8,7 @@ interface IBill {
     municipalPublicLightingContribution: number;
 
     monthReference: Date;
+    billFileName?: string;
 }
 
 type BillItem = {

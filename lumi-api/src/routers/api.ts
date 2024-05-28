@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 import handleUpload from '../helpers/fileUploadHandler';
 import extractTextPDF from '../helpers/scrapePDFHandler';
 import parsePDFData from '../helpers/parsePDFData';
-import { PrismaBillRepository } from '../repositories/implementations/PrismaBillRepository';
 import { PrismaCustomerRepository } from '../repositories/implementations/PrismaCustomerRepository';
 import billService from '../services/BillService';
+import path from 'path'
 
 const apiRouter = express.Router();
 
@@ -29,6 +29,12 @@ apiRouter.post('/analysis', async (req : Request, res: Response) => {
         return res.status(400).json();
     }
 });
+
+apiRouter.get('/download/:fileName', (req: Request, res: Response) => {
+    const filePath = path.join(__dirname, '..', 'uploads');
+    const file = `${filePath}/${req.params?.fileName}`;
+    return res.download(file); 
+})
 
 apiRouter.get('/electricity/:refNumber', async (req : Request, res : Response) => {
     try {
