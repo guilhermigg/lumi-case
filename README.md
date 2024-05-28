@@ -46,6 +46,8 @@ A API iniciará na porta 5000, enquanto o frontend iniciará na porta 3000.
 - API: Acesse o healthcheck da API via http://localhost:5000/api/v1/healthcheck.
 - Frontend: Acesse o frontend via http://localhost:3000.
 
+Na página inicial, terá a possibilidade de fazer o upload de cada Fatura. Quando finalizado, poderá acessar as páginas de Dashboard e Faturas da aplicação.
+
 ## Estrutura do Projeto
 
 A estrutura do projeto é organizada da seguinte forma:
