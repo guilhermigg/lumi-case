@@ -6,11 +6,6 @@ import DashboardCardNumbers from "../../components/DashboardCardNumbers";
 import customerService from "../../services/customerService";
 import billService from "../../services/billService";
 
-type customerList = {
-  label: string,
-  refNumber: string 
-}
-
 export default function Dashboard() {
   const [ customers, setCustomers ] = useState<customerList[]>([]);
   const [ customerReference, setCustomerReference ] = useState('');
