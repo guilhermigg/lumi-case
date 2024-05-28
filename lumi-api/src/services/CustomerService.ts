@@ -15,7 +15,7 @@ class CustomerService {
         if(!customer)
             customer = await this.customerRepository.create({
                 referenceNumber: referenceNumber,
-                name: "John Doe"
+                name: referenceNumber
             })
 
         return customer
