@@ -69,7 +69,7 @@ export default function BillsLibrary() {
           headerName: 'Mês de Referência',
           type: 'string',
           width: 110,
-          valueGetter: (value, row) => getMonthYear(value)
+          valueGetter: (value) => getMonthYear(value)
         },
         {
           field: 'billFileName',
