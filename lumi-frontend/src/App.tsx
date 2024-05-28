@@ -57,7 +57,7 @@ export default function App() {
     <Box>
       <Header title="Lumi" />
       <Container>
-        <h1> LUMI Dev Case </h1>
+        <h1> Upload de Faturas </h1>
         <form onSubmit={handleSubmit}>
           <Button
             component="label"
