@@ -1,6 +1,6 @@
 # Lumi Case
 
-Este é um case para o teste técnico da Lumi Labs
+Projeto para extração e visualização de dados de faturas de energia.
 
 ## Tecnologias
 - ExpressJS
